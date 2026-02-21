@@ -3,7 +3,7 @@
 
 require('dotenv').config();
 const { ethers }        = require('ethers');
-const { CHAINS }        = require('./config');
+const { CHAINS, tokenDecimals } = require('./config');
 const { PoolScanner }   = require('./scanner');
 const { ArbExecutor }   = require('./executor');
 const { FlashbotsProvider } = require('./flashbots');
@@ -124,8 +124,9 @@ async function main() {
             amountOutMin2:     0n,
           };
 
-          // Use USDC as reference: 1 USDC = 1e6
-          const loanAmount = ethers.parseUnits(String(LOAN_AMOUNT_USD), 6);
+          // Derive correct decimals for the borrowed token from the config lookup.
+          const decimals  = tokenDecimals(tokenA);
+          const loanAmount = ethers.parseUnits(String(LOAN_AMOUNT_USD), decimals);
 
           try {
             await executor.execute(best, loanAmount, arbParamsObj);

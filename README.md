@@ -123,7 +123,7 @@ npm run tauri dev     # native desktop app (requires Rust)
 | DEX integrations      | Uniswap V3, SushiSwap (V2-style), Curve StableSwap           |
 | Cross-chain           | Deployed separately per chain with chain-specific addresses  |
 | Security              | `Ownable`, `ReentrancyGuard`, custom errors, `SafeERC20`     |
-| Loan range            | $1 – $1,000,000 (limited by Aave pool liquidity)             |
+| Loan range            | Suggested $1 – $1,000,000 (actual limit = Aave pool liquidity per asset) |
 
 ### Key Functions
 

@@ -73,9 +73,18 @@ class PoolScanner {
 
           if (liquidity === 0n) return;
 
+          // Use BigInt arithmetic scaled to 1e18 to avoid float precision loss.
+          // price = (sqrtPriceX96 / 2^96)^2 = sqrtPriceX96^2 / 2^192
           const sqrtPrice = slot0.sqrtPriceX96;
-          const price     = (Number(sqrtPrice) / 2 ** 96) ** 2;
-          const adjusted  = t0.toLowerCase() === tokenA.toLowerCase() ? price : 1 / price;
+          const SCALE     = 10n ** 18n;
+          const Q192      = 2n ** 192n;
+          const priceScaled = (sqrtPrice * sqrtPrice * SCALE) / Q192; // price * 1e18
+          const adjScaled   = t0.toLowerCase() === tokenA.toLowerCase()
+            ? priceScaled
+            : (SCALE * SCALE) / priceScaled; // invert: 1/price scaled
+          // Store as a BigInt (scaled by 1e18) and also as a float for spread comparison
+          const price   = Number(adjScaled) / 1e18;
+          const adjusted = price;
 
           results.push({ pool: poolAddr, fee, price: adjusted, liquidity, source: 'uniswapV3' });
         } catch {
@@ -102,9 +111,12 @@ class PoolScanner {
       const [r0, r1] = [reserves.reserve0, reserves.reserve1];
       if (r0 === 0n || r1 === 0n) return null;
 
-      const price = t0.toLowerCase() === tokenA.toLowerCase()
-        ? Number(r1) / Number(r0)
-        : Number(r0) / Number(r1);
+      // Use BigInt arithmetic scaled to 1e18 to avoid float precision loss on large reserves.
+      const SCALE   = 10n ** 18n;
+      const priceScaled = t0.toLowerCase() === tokenA.toLowerCase()
+        ? (r1 * SCALE) / r0
+        : (r0 * SCALE) / r1;
+      const price = Number(priceScaled) / 1e18;
 
       return { pair: pairAddr, price, source: 'sushiswap' };
     } catch {

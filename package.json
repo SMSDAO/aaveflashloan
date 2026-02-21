@@ -7,10 +7,10 @@
     "start": "node engine/index.js",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "deploy:ethereum": "CHAIN=ethereum npx hardhat run scripts/deploy.js --network ethereum",
-    "deploy:polygon": "CHAIN=polygon npx hardhat run scripts/deploy.js --network polygon",
-    "deploy:arbitrum": "CHAIN=arbitrum npx hardhat run scripts/deploy.js --network arbitrum",
-    "deploy:bsc": "CHAIN=bsc npx hardhat run scripts/deploy.js --network bsc",
+    "deploy:ethereum": "npx hardhat run scripts/deploy.js --network ethereum",
+    "deploy:polygon": "npx hardhat run scripts/deploy.js --network polygon",
+    "deploy:arbitrum": "npx hardhat run scripts/deploy.js --network arbitrum",
+    "deploy:bsc": "npx hardhat run scripts/deploy.js --network bsc",
     "dashboard": "cd dash-admin && npm run dev"
   },
   "workspaces": [
