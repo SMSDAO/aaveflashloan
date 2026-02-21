@@ -2,7 +2,6 @@
 'use strict';
 
 const { ethers }   = require('ethers');
-const { fetchJson } = require('ethers');
 
 const FLASHBOTS_RPC = 'https://relay.flashbots.net';
 

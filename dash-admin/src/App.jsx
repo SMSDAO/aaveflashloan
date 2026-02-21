@@ -74,7 +74,7 @@ export default function App() {
   const [loanAmount,  setLoanAmount]  = useState(10000);
   const [minProfit,   setMinProfit]   = useState(15);
   const [scanInterval, setScanInterval] = useState(2000);
-  const [tradelive,   setTradeLive]   = useState(false);
+  const [tradeLive,   setTradeLive]   = useState(false);
   const [profitData,  setProfitData]  = useState(generateProfitData());
   const [scans,       setScans]       = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
@@ -191,7 +191,7 @@ export default function App() {
             <label style={{ ...labelStyle, flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 12 }}>
               <input
                 type="checkbox"
-                checked={tradelive}
+                checked={tradeLive}
                 onChange={e => setTradeLive(e.target.checked)}
               />
               <span>Trade Live</span>

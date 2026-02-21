@@ -274,7 +274,7 @@ contract FlashLoanArbitrageV3 is IFlashLoanSimpleReceiver, Ownable, ReentrancyGu
         );
 
         // ── Leg 2: tokenIntermediate → tokenBorrow ──────────────────────────
-        uint256 finalReceived = _swap(
+        _swap(
             arb.dex2,
             arb.tokenIntermediate,
             tokenBorrow,
@@ -291,7 +291,7 @@ contract FlashLoanArbitrageV3 is IFlashLoanSimpleReceiver, Ownable, ReentrancyGu
         if (balance < amountOwed)
             revert InsufficientBalance(amountOwed, balance);
 
-        IERC20(tokenBorrow).safeApprove(address(POOL), amountOwed);
+        IERC20(tokenBorrow).forceApprove(address(POOL), amountOwed);
 
         uint256 profit = balance - amountOwed;
         emit ArbExecuted(tokenBorrow, amountBorrowed, profit);
@@ -313,7 +313,7 @@ contract FlashLoanArbitrageV3 is IFlashLoanSimpleReceiver, Ownable, ReentrancyGu
         int128  curveJ
     ) internal returns (uint256 amountOut) {
         if (dex == DEX_UNISWAP_V3) {
-            IERC20(tokenIn).safeApprove(address(uniswapV3Router), amountIn);
+            IERC20(tokenIn).forceApprove(address(uniswapV3Router), amountIn);
             try uniswapV3Router.exactInputSingle(
                 ISwapRouterV3.ExactInputSingleParams({
                     tokenIn:           tokenIn,
@@ -331,7 +331,7 @@ contract FlashLoanArbitrageV3 is IFlashLoanSimpleReceiver, Ownable, ReentrancyGu
                 revert SwapFailed(dex);
             }
         } else if (dex == DEX_SUSHISWAP) {
-            IERC20(tokenIn).safeApprove(address(sushiswapRouter), amountIn);
+            IERC20(tokenIn).forceApprove(address(sushiswapRouter), amountIn);
             address[] memory path = new address[](2);
             path[0] = tokenIn;
             path[1] = tokenOut;
@@ -348,7 +348,7 @@ contract FlashLoanArbitrageV3 is IFlashLoanSimpleReceiver, Ownable, ReentrancyGu
             }
         } else if (dex == DEX_CURVE) {
             if (curvePool == address(0)) revert ZeroAddress();
-            IERC20(tokenIn).safeApprove(curvePool, amountIn);
+            IERC20(tokenIn).forceApprove(curvePool, amountIn);
             try ICurvePool(curvePool).exchange(curveI, curveJ, amountIn, amountOutMin)
             returns (uint256 out) {
                 amountOut = out;
