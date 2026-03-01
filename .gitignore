@@ -99,3 +99,7 @@ public
 
 # TernJS port file
 .tern-port
+
+# Dashboard dependencies
+dash-admin/node_modules/
+dash-admin/dist/
