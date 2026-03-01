@@ -79,14 +79,14 @@ class PoolScanner {
           const SCALE     = 10n ** 18n;
           const Q192      = 2n ** 192n;
           const priceScaled = (sqrtPrice * sqrtPrice * SCALE) / Q192; // price * 1e18
+          if (priceScaled === 0n) return; // avoid division by zero when inverting very small prices
           const adjScaled   = t0.toLowerCase() === tokenA.toLowerCase()
             ? priceScaled
             : (SCALE * SCALE) / priceScaled; // invert: 1/price scaled
-          // Store as a BigInt (scaled by 1e18) and also as a float for spread comparison
-          const price   = Number(adjScaled) / 1e18;
-          const adjusted = price;
+          // Keep price as a BigInt scaled by 1e18 to avoid precision loss; format later if needed
+          const price = adjScaled;
 
-          results.push({ pool: poolAddr, fee, price: adjusted, liquidity, source: 'uniswapV3' });
+          results.push({ pool: poolAddr, fee, price, liquidity, source: 'uniswapV3' });
         } catch {
           // pool doesn't exist or call reverted – skip
         }
