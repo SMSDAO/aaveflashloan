@@ -65,15 +65,22 @@ class ArbExecutor {
     );
 
     const feeData  = await this.wallet.provider.getFeeData();
+
+    // Build fee overrides in a way that is compatible with both EIP-1559 and
+    // legacy-gas networks (e.g. BSC or certain RPC providers).
+    const txOptions = { gasLimit };
+    if (feeData && feeData.maxFeePerGas != null && feeData.maxPriorityFeePerGas != null) {
+      txOptions.maxFeePerGas = feeData.maxFeePerGas;
+      txOptions.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+    } else if (feeData && feeData.gasPrice != null) {
+      txOptions.gasPrice = feeData.gasPrice;
+    }
+
     const tx = await this.contract.executeArbitrage(
       arbParamsObj.tokenBorrow,
       loanAmount,
       encoded,
-      {
-        gasLimit,
-        maxFeePerGas:         feeData.maxFeePerGas,
-        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-      }
+      txOptions
     );
 
     console.log(`[executor] tx sent: ${tx.hash}`);
