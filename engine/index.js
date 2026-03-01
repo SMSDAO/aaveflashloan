@@ -127,7 +127,13 @@ async function main() {
 
           // Derive correct decimals for the borrowed token from the config lookup.
           const decimals  = tokenDecimals(tokenA);
-          const loanAmount = ethers.parseUnits(String(LOAN_AMOUNT_USD), decimals);
+          // Interpret configured loan amount as *token units* for the borrowed asset.
+          // Prefer LOAN_AMOUNT_TOKEN, but fall back to LOAN_AMOUNT_USD for backwards compatibility.
+          const rawLoanAmount =
+            process.env.LOAN_AMOUNT_TOKEN != null && process.env.LOAN_AMOUNT_TOKEN !== ''
+              ? process.env.LOAN_AMOUNT_TOKEN
+              : LOAN_AMOUNT_USD;
+          const loanAmount = ethers.parseUnits(String(rawLoanAmount), decimals);
 
           try {
             await executor.execute(best, loanAmount, arbParamsObj);
