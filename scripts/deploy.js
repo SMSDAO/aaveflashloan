@@ -11,8 +11,9 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying to ${chain.name} with account: ${deployer.address}`);
 
+  const nativeSymbol = chain.nativeSymbol || 'native';
   const balance = await ethers.provider.getBalance(deployer.address);
-  console.log(`Account balance: ${ethers.formatEther(balance)} ETH`);
+  console.log(`Account balance: ${ethers.formatEther(balance)} ${nativeSymbol}`);
 
   const Factory = await ethers.getContractFactory('FlashLoanArbitrageV3');
   const contract = await Factory.deploy(
