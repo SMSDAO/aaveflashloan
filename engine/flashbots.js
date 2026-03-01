@@ -41,7 +41,9 @@ class FlashbotsProvider {
       ],
     });
 
-    const signature = await this.authSigner.signMessage(ethers.id(body));
+    // ethers v6: signMessage() treats a string as UTF-8 text.
+    // Flashbots requires signing the keccak256 digest *bytes*, not the hex string.
+    const signature = await this.authSigner.signMessage(ethers.getBytes(ethers.id(body)));
     const headers   = {
       'Content-Type':         'application/json',
       'X-Flashbots-Signature': `${await this.authSigner.getAddress()}:${signature}`,
@@ -77,7 +79,8 @@ class FlashbotsProvider {
       ],
     });
 
-    const signature = await this.authSigner.signMessage(ethers.id(body));
+    // ethers v6: sign the digest bytes, not the hex string.
+    const signature = await this.authSigner.signMessage(ethers.getBytes(ethers.id(body)));
     const headers   = {
       'Content-Type':         'application/json',
       'X-Flashbots-Signature': `${await this.authSigner.getAddress()}:${signature}`,

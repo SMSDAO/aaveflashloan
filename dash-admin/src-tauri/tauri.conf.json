@@ -12,7 +12,7 @@
   "tauri": {
     "allowlist": {
       "all": false,
-      "shell": { "all": false, "open": true }
+      "shell": { "all": false, "open": false }
     },
     "bundle": {
       "active": true,
@@ -20,7 +20,9 @@
       "identifier": "com.aaveflashloan.dashboard",
       "icon": []
     },
-    "security": { "csp": null },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
+    },
     "windows": [
       {
         "fullscreen": false,
