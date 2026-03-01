@@ -18,7 +18,8 @@ if (!CHAIN) {
 }
 
 const PRIVATE_KEY        = process.env.PRIVATE_KEY;
-const ARB_CONTRACT_ADDR  = process.env.ARB_CONTRACT_ADDRESS;
+const ARB_CONTRACT_ENV   = `ARB_CONTRACT_ADDRESS_${CHAIN_NAME.toUpperCase()}`;
+const ARB_CONTRACT_ADDR  = process.env[ARB_CONTRACT_ENV] || process.env.ARB_CONTRACT_ADDRESS;
 const SCAN_INTERVAL_MS   = parseInt(process.env.SCAN_INTERVAL_MS || '2000', 10);
 const MIN_PROFIT_BPS     = parseInt(process.env.MIN_PROFIT_BPS   || '15',   10);
 const LOAN_AMOUNT_USD    = parseFloat(process.env.LOAN_AMOUNT_USD || '10000');
