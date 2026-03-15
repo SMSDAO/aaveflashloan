@@ -1,0 +1,36 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "AaveFlashLoan Dashboard",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": { "all": false, "open": false }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.aaveflashloan.dashboard",
+      "icon": []
+    },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "AaveFlashLoan Dashboard",
+        "width": 1280,
+        "height": 800
+      }
+    ]
+  }
+}
