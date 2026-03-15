@@ -181,8 +181,9 @@ The `dash-admin/` directory contains a **Tauri** (Rust + React) desktop applicat
 
 ### Screenshots
 
-> _Screenshots will appear here once the Tauri desktop app is built._
-> Run `cd dash-admin && npm run tauri dev` to launch the native desktop app.
+![AaveFlashLoan Dashboard](docs/dashboard-screenshot.svg)
+
+*Dashboard showing the stopped-state view: stat cards (Total Scans, Total Profit, Loan Amount, Active Chain), live profit chart, and RPC connectivity status for all four chains. Click **▶ Start Bot** to begin scanning.*
 
 ---
 
